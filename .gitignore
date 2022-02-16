@@ -1,0 +1,6 @@
+venv/
+__pycache__/
+
+info.json
+chromedriver
+webpage.html
