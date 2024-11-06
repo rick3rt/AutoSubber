@@ -1,10 +1,8 @@
-
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from webdriver_manager.chrome import ChromeDriverManager
 
 import pandas as pd
 import time
@@ -16,16 +14,17 @@ SPORT_NAME = "SPINNING"
 SPORT_TABLE_NAME = "SPINNING"
 URL_LOGIN = "https://www.olympos.nl/Inloggen/tabid/422/language/nl-NL/Default.aspx?returnurl=%2f"
 URL_SUBSCRIBE = "https://www.olympos.nl/nl-nl/sportaanbod/groepslessen/allegroepslessen/details.aspx?sportgroep={}#Groepsles".format(
-    SPORT_NAME)
+    SPORT_NAME
+)
 
 # sensitive information
-with open('info.json', 'r') as f:
+with open("info.json", "r") as f:
     data = json.load(f)
 print(data)
 
-DAY_STR = 'di'
-SCO_NUM = data['sco']
-SCO_PASSWD = data['word']
+DAY_STR = "di"
+SCO_NUM = data["sco"]
+SCO_PASSWD = data["word"]
 IS_LOGIN = True
 
 # website info
@@ -63,9 +62,11 @@ def subscribe():
     #                     //*[@id="{}"]/div[3]/table
     # XPATH_SPORT_TABLE = '//*[@id="{}"]/div[3]/table'.format(SPORT_NAME)
     tab2 = driver.find_element(
-        By.CSS_SELECTOR, "#{sport} > div.aanbod.visibleTrue > table".format(sport=SPORT_TABLE_NAME))
-    html = tab2.get_attribute('outerHTML')
-    with open('webpage.html', 'w') as f:
+        By.CSS_SELECTOR,
+        "#{sport} > div.aanbod.visibleTrue > table".format(sport=SPORT_TABLE_NAME),
+    )
+    html = tab2.get_attribute("outerHTML")
+    with open("webpage.html", "w") as f:
         f.write(html)
 
     # convert table to pandas
@@ -76,16 +77,18 @@ def subscribe():
     # find a button
     DAY_NUM = ROW_NUM + 1
     XPATH_BUT = '//*[@id="{sport}"]/div[3]/table/tbody/tr[{dag}]/td[9]/a'.format(
-        sport=SPORT_TABLE_NAME,
-        dag=DAY_NUM)
+        sport=SPORT_TABLE_NAME, dag=DAY_NUM
+    )
     # print(XPATH_BUT)
     but = driver.find_element(By.XPATH, XPATH_BUT)
 
     IS_RESERVING = False
     time.sleep(1.35)  # s
-    if "VOLGEBOEKT" in but.text or \
-            "KAN NU NIET MEER" in but.text or \
-            "VANAF" in but.text:
+    if (
+        "VOLGEBOEKT" in but.text
+        or "KAN NU NIET MEER" in but.text
+        or "VANAF" in but.text
+    ):
         print("dag is al vol of kan nog niet: ", but.text)
         driver.close()
         print("MISKULLLKT!")
@@ -105,29 +108,27 @@ def subscribe():
         time.sleep(1.1235)  # s
         try:
             elem = WebDriverWait(driver, 10).until(
-                EC.presence_of_element_located(
-                    (By.ID, "evenwachten"))
+                EC.presence_of_element_located((By.ID, "evenwachten"))
             )
             if "De geselecteerde cursus of les is vol." in elem.text:
                 print("Les is vol. ABORT!")
                 but = driver.find_element(By.XPATH, XPATH_RESULT)
                 but.click()
                 isVol = True
-            print('am here:')
+            print("am here:")
             print(elem.text)
         finally:
             isVol = False
             # print('Reservation kan wel? ')
             print(elem.text)
 
-    print('revereer knoppen indrukken:')
+    print("revereer knoppen indrukken:")
     print(isVol)
     # act on result
     if not isVol:
         try:
             elem = WebDriverWait(driver, 10).until(
-                EC.presence_of_element_located(
-                    (By.ID, "sportpas"))
+                EC.presence_of_element_located((By.ID, "sportpas"))
             )
             print(elem.text)
             if elem:
@@ -136,7 +137,7 @@ def subscribe():
                 but.click()
                 isVol = True
         finally:
-            print('Reservation is onderweg en gaat wel lukken hoor.')
+            print("Reservation is onderweg en gaat wel lukken hoor.")
 
     print("Thats it :) daAAAAAG")
     time.sleep(1.12837)  # s
@@ -145,5 +146,5 @@ def subscribe():
     return 1
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     sucess = subscribe()
