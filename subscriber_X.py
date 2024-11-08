@@ -9,8 +9,8 @@ import pandas as pd
 import time
 import json
 
-from chromedriver_manager import ChromeDriverManager
-from credentialManager import CredentialManager
+from autosubber.chromedrivermanager import ChromeDriverManager
+from autosubber.credentialmanager import CredentialManager
 
 # some urls
 URL_LOGIN = "https://x.tudelft.nl/pages/login"
@@ -23,26 +23,21 @@ XPATH_PASSWD = r'//*[@id="password"]'
 
 
 def subscribe():
-    # open webpage
 
+    # Open a webdriver (automated browser)
     # deprecated:
     # cdm = ChromeDriverManager()
     # exe = cdm.getExecutable()
-
     driver = webdriver.Chrome()
     driver.implicitly_wait(10)
     driver.get(URL_LOGIN)
-    print(driver.title)
     time.sleep(1)
 
     # click TU Delft login button
     driver.find_element(By.XPATH, value=XPATH_BUTTON_LOGIN).click()
 
-    time.sleep(1)
     # select TU Delft org
     driver.find_element(By.XPATH, value=XPATH_BUTTON_TUDELFT).click()
-
-    time.sleep(1)
 
     # retrieve credentials from credential manager
     cm = CredentialManager()
@@ -51,11 +46,11 @@ def subscribe():
     input_netid = driver.find_element(By.XPATH, value=XPATH_NETID)
     input_netid.clear()
     input_netid.send_keys(USERNAME)
-    time.sleep(1)
+
     input_passwd = driver.find_element(By.XPATH, value=XPATH_PASSWD)
     input_passwd.clear()
     input_passwd.send_keys(password)
-    time.sleep(1)
+
     input_passwd.send_keys(Keys.RETURN)  # login!
 
     time.sleep(10)

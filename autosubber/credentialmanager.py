@@ -1,9 +1,38 @@
 from cryptography.fernet import Fernet
+import getpass
 import json
 import os
 
 
 class CredentialManager:
+    """
+    CredentialManager is a class that manages the storage and retrieval of credentials
+    using encryption for security. It handles the creation of encryption keys, loading
+    and saving of encrypted credentials, and provides methods to add, list, and retrieve
+    credentials.
+    Attributes:
+        filename (str): The path to the file where credentials are stored.
+        key_file (str): The path to the file where the encryption key is stored.
+        key (bytes): The encryption key used for encrypting and decrypting credentials.
+        cipher (Fernet): The Fernet cipher object used for encryption and decryption.
+        credentials (dict): A dictionary storing the credentials.
+    Methods:
+        __init__(filename="data/credentials.json"):
+            Initializes the CredentialManager with the specified filename.
+        load_key():
+            Loads the encryption key from the key file, generating a new key if it doesn't exist.
+        load_credentials():
+            Loads and decrypts the credentials from the credentials file.
+        save_credentials():
+            Encrypts and saves the credentials to the credentials file.
+        add_credential(username, password):
+            Adds a new credential (username and password) to the credentials dictionary and saves it.
+        list_credentials():
+            Returns a list of all stored usernames.
+        get_password(username):
+            Retrieves the password for the specified username, or None if the username does not exist.
+    """
+
     def __init__(self, filename="data/credentials.json"):
         self.filename = filename
         self.key_file = "data/key.key"
@@ -66,9 +95,9 @@ def main():
 
         if choice == "1":
             username = input("Enter username: ")
-            password = input("Enter password: ")
+            password = getpass.getpass("Enter password: ")
             manager.add_credential(username, password)
-            print(f"Credential for {username} added successfully.")
+            print(f"Credential for {username} added successfuly.")
 
         elif choice == "2":
             print("Stored Credentials:")

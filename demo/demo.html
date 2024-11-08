@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+
+        .login-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 320px;
+        }
+
+        input {
+            display: block;
+            margin: 10px 0;
+            padding: 10px;
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 10px;
+            width: 100%;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .message-box {
+            background-color: #fff;
+            margin-top: 20px;
+            padding: 10px;
+            width: 300px;
+            height: 50px;
+            text-align: center;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .success {
+            color: #28a745;
+        }
+
+        .error {
+            color: #dc3545;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="login-container">
+        <h2>Login</h2>
+        <input type="text" id="username" placeholder="Username">
+        <input type="password" id="password" placeholder="Password">
+        <button onclick="login()">Login</button>
+    </div>
+
+    <!-- Message box for login status -->
+    <div id="message-box" class="message-box"></div>
+
+    <script>
+        // Hardcoded credentials (for demonstration purposes)
+        const validUsername = "user";
+        const validPassword = "pass";
+
+        function login() {
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+            const messageBox = document.getElementById("message-box");
+
+            // Check credentials
+            if (username === validUsername && password === validPassword) {
+                document.title = "Login Success";
+                messageBox.textContent = "Login successful!";
+                messageBox.className = "message-box success";
+            } else {
+                document.title = "Login Failed";
+                messageBox.textContent = "Login failed. Please try again.";
+                messageBox.className = "message-box error";
+            }
+        }
+    </script>
+</body>
+
+</html>
