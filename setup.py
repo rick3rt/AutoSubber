@@ -12,5 +12,6 @@ setup(
         "selenium",
         "pandas",
         "cryptography",
+        "apscheduler",
     ],
 )
